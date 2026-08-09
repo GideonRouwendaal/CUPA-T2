@@ -1,0 +1,83 @@
+max_t2: 200.0
+min_t2: 0.0
+regression_params:
+  acc_rate: '4'
+  add_positional_encoding: false
+  heteroscedastic: true
+  lowrank_rank: null
+  multitask: false
+  param_to_predict: t2star
+  regression_gt_train_location: ../data/T2_param_data/With_Unc/acc_rate_4/train/
+  regression_gt_val_location: ../data/T2_param_data/With_Unc/acc_rate_4/val/
+  regression_model_params:
+    activation: None
+    dropout_rate: 0.0
+    hidden_ch: 64
+    in_ch: 12
+    num_layers: 5
+    out_ch: 1
+  regression_train_params:
+    batch_size: 1024
+    consistency_weight: 0.1
+    cv_correlation_weight: 0.1
+    early_stopping_patience: 40
+    grad_max_norm: 0
+    include_physics_loss: false
+    loss: L2
+    lr: 0.0001
+    n_epochs: 200
+    noise_scale: 1.0
+    noise_schedule: constant
+    rms_correlation_weight: 0.1
+    uncertainty_schedule:
+      mode: tissue_quantile
+      q_lo: 0.0
+      q_hi: 0.0
+      alpha_min: 0.0
+      alpha_max: 0.0
+      gamma: 1.0
+      beta: 0.0
+      w_min: 1.0
+      compute_quantiles_at_start: true
+      max_quantile_samples: 5000000
+      use_fixed_quantiles: false
+      fallback_mode: none
+      tissue_schedule:
+        wm:
+          alpha_min: 0.0
+          alpha_max: 0.0
+          gamma: 0.0
+        gm:
+          alpha_min: 0.0
+          alpha_max: 0.0
+          gamma: 0.0
+        csf:
+          alpha_min: 0.0
+          alpha_max: 0.0
+          gamma: 0.0
+    use_consistency_loss: false
+    use_cv_correlation_loss: false
+    use_rms_correlation_loss: true
+    weight_decay: 0.0
+  run_tag: no_sampling
+  s0_max: 2.5
+  s0_min: 0.0
+  te_values:
+  - 5
+  - 10
+  - 15
+  - 20
+  - 25
+  - 30
+  - 35
+  - 40
+  - 45
+  - 50
+  - 55
+  - 60
+  uncertainty_mode: cholesky_concat
+  use_mc_dropout: true
+  sweep_type: rms_correlation
+  sweep_src_idx: 1
+  sweep_rms_weight: 0.0
+  sweep_src_rank: null

@@ -1,0 +1,156 @@
+configurator:
+  class_name: DLConfigurator
+  module_name: core.Configurator
+  params: null
+device: gpu
+downstream_batch_size: 8
+downstream_tasks:
+  T2StarReconstruction-HighExclRate:
+    checkpoint_path: './results/recon_t2star/downstream_metrics/'
+    class_name: PDownstreamEvaluator
+    data_loader:
+      class_name: RawT2starLoader
+      datasets:
+        val:
+          data_dir:
+            test: ../data/mr_data/links_to_data/recon_val/
+      module_name: data.t2star_loader
+      params:
+        args:
+          batch_size: 8
+          bm_thr: 0.2
+          load_whole_set: false
+          normalize: abs_image
+          normalize_volume: false
+          only_brainmask_slices: true
+          random_mask: &id001
+          - Cartesian
+          - 2
+          - 0.16
+          select_echo: false
+          var_acc_rate:
+          - 2
+          - 0.16
+    module_name: projects.recon_t2star.downstream_evaluator
+    params:
+      include_brainmask: true
+      task: recon_uncertainty
+  T2StarReconstruction-LowExclRate:
+    checkpoint_path: './results/recon_t2star/downstream_metrics/'
+    class_name: PDownstreamEvaluator
+    data_loader:
+      class_name: RawT2starLoader
+      datasets:
+        val:
+          data_dir:
+            test: ../data/mr_data/links_to_data/recon_val/
+      module_name: data.t2star_loader
+      params:
+        args:
+          batch_size: 8
+          bm_thr: 0.2
+          load_whole_set: false
+          normalize: abs_image
+          normalize_volume: false
+          only_brainmask_slices: true
+          random_mask: *id001
+          select_echo: false
+          var_acc_rate:
+          - 2
+          - 0.16
+    module_name: projects.recon_t2star.downstream_evaluator
+    params:
+      include_brainmask: true
+      task: recon_uncertainty
+  T2StarReconstruction-MediumExclRate:
+    checkpoint_path: './results/recon_t2star/downstream_metrics/'
+    class_name: PDownstreamEvaluator
+    data_loader:
+      class_name: RawT2starLoader
+      datasets:
+        val:
+          data_dir:
+            test: ../data/mr_data/links_to_data/recon_val/
+      module_name: data.t2star_loader
+      params:
+        args:
+          batch_size: 8
+          bm_thr: 0.2
+          load_whole_set: false
+          normalize: abs_image
+          normalize_volume: false
+          only_brainmask_slices: true
+          random_mask: *id001
+          select_echo: false
+          var_acc_rate:
+          - 2
+          - 0.16
+    module_name: projects.recon_t2star.downstream_evaluator
+    params:
+      include_brainmask: true
+      task: recon_uncertainty
+experiment:
+  name: Cartesian_RandomMask_ReconExperiments
+  task: train
+  weights: null
+model:
+  class_name: ComplexUnrolledNetwork
+  hyper_setup: false
+  module_name: model_zoo.unrolled_recon
+  params:
+    activation: relu
+    conv_echo: false
+    dc_method: GD
+    denoiser_method: UncReal2chCNN
+    echo_kernel_size: 5
+    fc_echo: false
+    kernel_size: 3
+    nr_echoes: 12
+    nr_filters: 64
+    nr_iterations: 5
+    nr_layers: 5
+    partial_weight_sharing: false
+    select_echo: false
+    weight_sharing: false
+name: Train_UnrolledRecon_RandomMasks_Cartesian_Acc2_Exp14
+random_mask: *id001
+select_echo: false
+train_batch_size: 32
+trainer:
+  class_name: PTrainer
+  data_loader:
+    class_name: RawT2starLoader
+    module_name: data.t2star_loader
+    params:
+      args:
+        batch_size: 32
+        bm_thr: 0.2
+        data_dir:
+          test: ../data/mr_data/links_to_data/recon_val/
+          train: ../data/mr_data/links_to_data/recon_train/
+          val: ../data/mr_data/links_to_data/recon_val/
+        normalize: percentile_image
+        normalize_volume: true
+        only_brainmask_slices: true
+        random_mask: *id001
+        select_echo: false
+        var_acc_rate: &id002
+        - 2
+        - 0.16
+  module_name: projects.recon_t2star.trainer
+  params:
+    checkpoint_path: './results/recon_t2star/weights/cartesian/var_acc_rate_2/'
+    loss:
+      class_name: RealImagL2
+      lambda: 1.0
+      module_name: optim.losses.ln_losses
+      params:
+        mask_image: false
+    loss_domain: I
+    nr_epochs: 4000
+    uncertainty_estimation: true
+    optimizer_params:
+      lr: 0.0001
+    patience: 2000
+    wandb_log_gradients: false
+var_acc_rate: *id002
