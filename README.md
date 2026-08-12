@@ -2,7 +2,7 @@
 
 **Gideon N. L. Rouwendaal**, Natascha Niessen, Hannah Eichhorn, Dirk H. J. Poot, Christine Preibisch, Julia A. Schnabel
 
-Accepted at [Reconstruction and Imaging Motion Estimation (RIME) Workshop at MICCAI](https://rime-miccai.github.io/) | [Link to paper]()
+Accepted at [Reconstruction and Imaging Motion Estimation (RIME) Workshop at MICCAI](https://rime-miccai.github.io/) | [Link to paper](https://arxiv.org/abs/2608.08693v1)
 
 **Abstract:** 
 Quantitative T2* maps have strong potential for biomarker discovery but are limited by long scan times, rendering them impractical in clinical settings. Significant acceleration can be achieved through undersampling in k-space combined with learning-based reconstruction. However, reconstruction artifacts and noise can propagate into downstream T2* fitting, degrading its accuracy. We introduce CUPA-T2*, a framework that explicitly propagates voxel-wise inter-echo uncertainty from stochastic Monte Carlo dropout reconstructions to downstream T2* fitting via covariance-aware sampling. T2* fitting is performed with a heteroscedastic MLP and a correlation-based regularizer that encourages alignment between predicted variance and reconstruction uncertainty. Experiments on accelerated brain MRI data show tissue-dependent behavior: CUPA-T2* achieves competitive overall T2* fitting performance and improves white-matter performance at higher accelerations. Compared with a heteroscedastic baseline, the proposed framework substantially increases alignment between reconstruction uncertainty and predicted T2* variance, while also revealing a trade-off with calibration (ECE) and selective prediction performance (AURC). CUPA-T2* enables reconstruction uncertainty-aware T2* fitting and delivers voxel-wise uncertainty maps to support the interpretation of quantitative T2* estimates.
@@ -14,8 +14,14 @@ Quantitative T2* maps have strong potential for biomarker discovery but are limi
 If you use this code, please cite our paper:
 
 ```
-@misc{rouwendaal2026cupa_t2_star,
-    ...
+@misc{rouwendaal2026cupat2,
+      title={CUPA-T2*: Covariance-Aware Uncertainty Propagation and Alignment for T2* Mapping in Accelerated MRI}, 
+      author={Gideon N. L. Rouwendaal and Natascha Niessen and Hannah Eichhorn and Dirk H. J. Poot and Christine Preibisch and Julia A. Schnabel},
+      year={2026},
+      eprint={2608.08693},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2608.08693}, 
 }
 ```
 
